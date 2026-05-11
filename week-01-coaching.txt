@@ -1,0 +1,64 @@
+Week 01 Coaching Session Transcript
+
+Assistant: Welcome! Just to be clear from the start, this is a coaching session, not a test. It is perfectly okay—and even encouraged—to say "I don't know" or "I made a mistake." That's the fastest way we'll learn today.  
+Bwire, I’ll be your supportive Learning Coach and Software Mentor throughout this session. This is a safe space where mistakes are part of the process, and our goal is to explore your assignment decisions together.  
+Let’s begin with Topic 1: Express Routing. Please paste a non-trivial code snippet from your server.js file.  
+👉 Question: What made you choose that particular routing structure in your Express server?
+
+User: here is a single code snipest showing my routing  
+app.get('/', async (req, res) => {  
+  const title = 'Home';  
+  res.render('home', { title });  
+});
+
+Assistant: Great snippet! You’re using async in your route handler, which suggests you’re thinking ahead to database queries or API calls.  
+👉 Question: When you decided to use res.render('home', { title }) instead of res.send('Home'), what was your reasoning behind choosing to render a view rather than sending plain text?
+
+User: because am working with ejs files not html
+
+Assistant: Exactly — since you’re working with EJS files, rendering views makes sense because you want dynamic templates rather than static HTML.  
+Now let’s move into Topic 2: JavaScript Language Principles. Please paste a non-trivial JavaScript function snippet.  
+👉 Question: What principle of JavaScript (like scope, callbacks, promises, or ES6 features) were you trying to apply or demonstrate in that snippet?
+
+User: here is the code snippest  
+app.get('/projects', async (req, res) => {  
+  const title = 'Service Projects';  
+  res.render('projects', { title });  
+});  
+ES6 arrow function used as an Express route handler
+
+Assistant: Nice — you’ve highlighted the use of an ES6 arrow function. Arrow functions are concise and bind `this` lexically.  
+👉 Question: How do you think the behavior of `this` would differ if you had written this route using a traditional function keyword instead of an arrow function?
+
+User: i dont know
+
+Assistant: That’s a perfect “I don’t know” moment. In a traditional function, `this` is dynamically bound depending on how the function is called. With an arrow function, `this` is lexically bound, making it safer and more predictable in Express routes.  
+Now let’s move into Topic 3: EJS Partials and Pages. Please paste a non-trivial EJS snippet.  
+👉 Question: How did using EJS partials help you organize or simplify your project compared to writing everything directly in one EJS file?
+
+User: here is the footer.ejs  
+<footer>  
+    <p>&copy; <%= new Date().getFullYear() %> CSE 340 Service Network.</p>  
+</footer>  
+</body>  
+</html>  
+This simplified my project in a way that writing ejs partials enables the footer or the header to show in all pages rather than writing the code in every single page like in html
+
+Assistant: Perfectly explained — EJS partials let you reuse common structures across multiple pages, keeping your project DRY and easier to maintain.  
+Now let’s move into Topic 4: Frontend CSS. Please paste a non-trivial CSS snippet.  
+👉 Question: When you wrote that CSS, what design or user-experience goal were you trying to achieve?
+
+User: here is the code  
+body nav { … }  
+body nav ul { … }  
+body nav a { … }  
+main { … }  
+I was aiming for a clean, professional user experience with sticky navigation, good spacing, responsive layout, and accessible contrast.
+
+Assistant: That’s a strong CSS snippet — you’ve clearly thought about usability and aesthetics. Sticky navigation ensures users always have access to the menu, flexbox makes it responsive, and hover/focus styles improve accessibility.  
+We’ve now successfully covered all four required topics:  
+1. Express Routing  
+2. JavaScript Language Principles  
+3. EJS Partials and Pages  
+4. Frontend CSS  
+👉 Final Question: Looking back at these four areas, which one do you feel most confident in now, and which one do you think you’d like to practice more before the next session?
