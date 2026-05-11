@@ -1,35 +1,176 @@
-html,
+:root {
+    color-scheme: light;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: #1f2937;
+    background-color: #f4f7fb;
+    line-height: 1.6;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, rgba(46, 138, 153, 0.12), transparent 26%),
+        linear-gradient(180deg, #f4f7fb 0%, #eef4fb 100%);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body nav {
+    background: #ffffffee;
+    border-bottom: 1px solid rgba(31, 41, 55, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(10px);
 }
 
 body nav ul {
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0.8rem 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
 }
 
 body nav li {
-    display: inline;
-    margin-right: 15px;
+    margin: 0;
 }
 
 body nav a {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 0.9rem;
+    color: #1c3144;
     text-decoration: none;
-    color: #333;
-    font-weight: bold;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-body nav a:hover {
-    color: #0066cc;
+body nav a:hover,
+body nav a:focus-visible {
+    background-color: #e8f2fb;
+    color: #11436b;
+    outline: none;
+    transform: translateY(-1px);
+}
+
+main {
+    max-width: 980px;
+    margin: 2rem auto 3rem;
+    padding: 1.6rem;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 28px 80px rgba(31, 41, 55, 0.08);
+}
+
+main h1 {
+    margin-top: 0;
+    margin-bottom: 0.85rem;
+    font-size: clamp(2rem, 2.4vw, 3rem);
+    letter-spacing: -0.04em;
+    color: #102238;
+}
+
+main h2 {
+    font-size: clamp(1.35rem, 1.8vw, 1.75rem);
+    margin-bottom: 0.65rem;
+    color: #1c3144;
+}
+
+main p {
+    margin: 0 0 1.25rem;
+    color: #374151;
+    font-size: 1rem;
+}
+
+main section {
+    margin-top: 1.75rem;
+    padding: 1.4rem 1.6rem;
+    background: #f8fbff;
+    border: 1px solid rgba(56, 103, 173, 0.08);
+    border-radius: 18px;
+}
+
+main section+section {
+    margin-top: 1.5rem;
+}
+
+main ul {
+    margin: 0;
+    padding-left: 1.35rem;
+    color: #334155;
+}
+
+main li {
+    margin-bottom: 0.95rem;
+    font-size: 1rem;
+}
+
+.main-logo {
+    display: block;
+    margin: 1.75rem auto 0;
+    max-width: 360px;
+    border-radius: 20px;
+    box-shadow: 0 24px 60px rgba(31, 41, 55, 0.08);
 }
 
 footer {
-    margin-top: 20px;
-    padding: 10px;
+    max-width: 980px;
+    margin: 0 auto 2rem;
+    padding: 1rem 1.4rem;
     text-align: center;
-    border-top: 1px solid #ccc;
-    background-color: rgba(255, 255, 255, 0.8);
+    color: #475569;
+    font-size: 0.95rem;
+}
+
+footer p {
+    margin: 0;
+}
+
+@media (max-width: 720px) {
+    body nav ul {
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 1rem;
+    }
+
+    main {
+        margin: 1rem;
+        padding: 1.2rem;
+    }
+
+    main section {
+        padding: 1.2rem 1.3rem;
+    }
+}
+
+@media (max-width: 520px) {
+    body nav ul {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    body nav a {
+        justify-content: center;
+    }
+
+    main {
+        border-radius: 18px;
+    }
 }
