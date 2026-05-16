@@ -1,13 +1,12 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { getAllOrganizations } from './src/models/organizations.js';
 import { testConnection } from './src/models/db.js';
-
+import { getAllOrganizations } from './src/models/organizations.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,17 +46,11 @@ app.get('/categories', async (req, res) => {
 
 
 app.get('/organizations', async (req, res) => {
+    const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
-let organizations = [];
-    try {
-        organizations = await getAllOrganizations();
-        console.log('Fetched organizations:', organizations.length);
-    } catch (err) {
-        console.error('Failed to fetch organizations:', err);
-    }
+
     res.render('organizations', { title, organizations });
 });
-
 
 
 app.listen(PORT, async () => {
