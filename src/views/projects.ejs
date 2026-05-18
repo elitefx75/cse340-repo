@@ -5,30 +5,69 @@
             <%= title %>
         </h1>
 
-        <!-- AIzaSyC_KtRUoEpHDQwVmQs9LldMDnk1qI4UMJ8 -->
+        <p>
+            Discover service projects designed to make a positive impact in communities around the region.
+            These projects connect volunteers with meaningful work across a range of focus areas.
+        </p>
 
-        <p>Discover service projects designed to make a positive impact in communities around the region. These projects
-            connect volunteers with meaningful work across a range of focus areas.</p>
+        <% const projectsList=typeof projects !=='undefined' && Array.isArray(projects) ? projects : []; %>
 
-        <section>
-            <h2>Featured Service Projects</h2>
-            <ul>
-                <li><strong>Park Cleanup Initiative</strong> — Help restore local green spaces by removing litter,
-                    planting native flowers, and improving public trails.</li>
-                <li><strong>After-School Tutoring</strong> — Support students with homework help, reading practice, and
-                    mentorship in a safe learning environment.</li>
-                <li><strong>Neighborhood Food Drive</strong> — Organize donations, pack care kits, and deliver food to
-                    families in need.</li>
-                <li><strong>Health Awareness Fair</strong> — Assist community partners with wellness booths, screenings,
-                    and health education outreach.</li>
-            </ul>
-        </section>
+            <section>
+                <h2>Featured Service Projects</h2>
 
-        <section>
-            <h2>How to Get Involved</h2>
-            <p>Browse projects by category, choose one that matches your interests, and join other volunteers to make a
-                real difference. Every project helps build stronger communities.</p>
-        </section>
+                <% if (projectsList.length===0) { %>
+                    <p>No projects found.</p>
+                    <% } else { %>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Project ID</th>
+                                    <th>Organization ID</th>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Date</th>
+                                    <th>Organization</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% projectsList.forEach(project=> { %>
+                                    <tr>
+                                        <td>
+                                            <%= project.project_id %>
+                                        </td>
+                                        <td>
+                                            <%= project.organization_id %>
+                                        </td>
+                                        <td>
+                                            <%= project.title %>
+                                        </td>
+                                        <td>
+                                            <%= project.description %>
+                                        </td>
+                                        <td>
+                                            <%= project.location %>
+                                        </td>
+                                        <td>
+                                            <%= project.date ? new Date(project.date).toDateString() : '' %>
+                                        </td>
+                                        <td>
+                                            <%= project.organization_name %>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                        <% } %>
+            </section>
+
+            <section>
+                <h2>How to Get Involved</h2>
+                <p>
+                    Browse projects by category, choose one that matches your interests, and join other volunteers
+                    to make a real difference. Every project helps build stronger communities.
+                </p>
+            </section>
     </main>
 
     <%- include('partials/footer') %>

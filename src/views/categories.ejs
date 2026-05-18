@@ -1,19 +1,25 @@
-<%- include('partials/header') %>
 
-    <main>
-        <h1>
-            <%= title %>
-        </h1>
 
-        <section>
-            <h2>Service Project Categories</h2>
-            <ul>
-                <li>Environmental</li>
-                <li>Educational</li>
-                <li>Community Service</li>
-                <li>Health and Wellness</li>
-            </ul>
-        </section>
-    </main>
+    <%- include('partials/header') %>
 
-    <%- include('partials/footer') %>
+<main>
+    <h1>Service Categories</h1>
+   <ul class="grid-list">
+    <% categories.forEach(category => { %>
+        <li>
+            <img src="/images/<%= category.category_image %>" alt="<%= category.category_name %> icon">
+            
+            <strong><%= category.category_name %></strong>
+            
+            <!-- This adds your new words -->
+            <p class="category-desc">
+                <%= category.category_description %>
+            </p>
+            <!-- Inside the EJS loop -->
+    <a href="#" class="btn-small">View Projects</a>
+        </li>
+    <% }); %>
+</ul>
+</main>
+
+<%- include('partials/footer') %>
