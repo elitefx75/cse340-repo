@@ -13,8 +13,11 @@ import { Pool } from 'pg';
  */
 const pool = new Pool({
     connectionString: process.env.DB_URL,
-    ssl: true
+    ssl: {
+        rejectUnauthorized: false   // ✅ Accept Render’s self-signed cert
+    }
 });
+
 
 /**
  * Common SSL Issue:
