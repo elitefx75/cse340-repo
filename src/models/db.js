@@ -18,7 +18,6 @@ const pool = new Pool({
     }
 });
 
-
 /**
  * Common SSL Issue:
  *
