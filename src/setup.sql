@@ -53,45 +53,58 @@ VALUES
 (3, 'Vocational Training', 'Offering tailoring and craft skills to women.', 'Mbarara', '2026-10-31');
 
 
--- 1. Create Category Table
+-- ========================================
+-- Category Table
+-- ========================================
 CREATE TABLE IF NOT EXISTS category (
     category_id SERIAL PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL
-);
-
--- 2. Create Project Table (If you don't have it yet)
-CREATE TABLE IF NOT EXISTS project (
-    project_id SERIAL PRIMARY KEY,
-    project_name VARCHAR(150) NOT NULL,
-    description TEXT,
-    organization_id INT REFERENCES organization(organization_id)
-);
-
--- 3. Create Join Table (Requirement: Relationships modeled correctly)
-CREATE TABLE IF NOT EXISTS project_category (
-    project_id INT REFERENCES project(project_id),
-    category_id INT REFERENCES category(category_id),
-    PRIMARY KEY (project_id, category_id)
-);
-
--- 4. Insert Sample Categories
-INSERT INTO category (category_name) VALUES 
-('Environmental'), 
-('Educational'), 
-('Community Service'), 
-('Health and Wellness');
-
-CREATE TABLE category (
-    category_id SERIAL PRIMARY KEY,
-    category_name VARCHAR(100) NOT NULL,
+    category_name VARCHAR(100) NOT NULL UNIQUE,
     category_description TEXT NOT NULL,
     category_image VARCHAR(255) NOT NULL
 );
 
--- 3. Insert all 4 categories with ALL data (name, desc, image)
+-- ========================================
+-- Project-Category Join Table
+-- ========================================
+CREATE TABLE IF NOT EXISTS project_category (
+    project_id INT NOT NULL REFERENCES project(project_id),
+    category_id INT NOT NULL REFERENCES category(category_id),
+    PRIMARY KEY (project_id, category_id)
+);
+
+-- ========================================
+-- Category Data
+-- ========================================
 INSERT INTO category (category_name, category_description, category_image)
 VALUES
 ('Environmental', 'Protect our planet through tree planting and conservation.', 'environmental.jpg'),
 ('Educational', 'Help students succeed by tutoring and providing school supplies.', 'educational.jpg'),
 ('Community Service', 'Build a stronger neighborhood by helping at shelters.', 'community.jpg'),
-('Health and Wellness', 'Support local clinics and promote healthy living.', 'heath.jpg');
+('Health and Wellness', 'Support local clinics and promote healthy living.', 'heath.jpg')
+ON CONFLICT (category_name) DO NOTHING;
+
+-- ========================================
+-- Project-Category Associations
+-- ========================================
+-- Assigning categories to each service project
+INSERT INTO project_category (project_id, category_id)
+VALUES
+-- BrightFuture Builders projects
+(1, 2), (1, 3),  -- Community Library Build: Educational, Community Service
+(2, 2),          -- Youth Skills Workshop: Educational
+(3, 2), (3, 3),  -- School Renovation: Educational, Community Service
+(4, 1), (4, 3),  -- Water Well Project: Environmental, Community Service
+(5, 1),          -- Solar Lighting Installation: Environmental
+-- GreenHarvest Growers projects
+(6, 1), (6, 2),  -- Organic Farming Training: Environmental, Educational
+(7, 1), (7, 3),  -- Community Garden Setup: Environmental, Community Service
+(8, 1),          -- Tree Planting Drive: Environmental
+(9, 1),          -- Irrigation System Build: Environmental
+(10, 1),         -- Seed Distribution Program: Environmental
+-- UnityServe Volunteers projects
+(11, 3), (11, 4), -- Health Camp: Community Service, Health and Wellness
+(12, 2),         -- Literacy Program: Educational
+(13, 3), (13, 4), -- Disaster Relief Support: Community Service, Health and Wellness
+(14, 1), (14, 3), (14, 4), -- Community Clean-Up: Environmental, Community Service, Health and Wellness
+(15, 2), (15, 4) -- Vocational Training: Educational, Health and Wellness
+ON CONFLICT DO NOTHING;

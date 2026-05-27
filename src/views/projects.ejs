@@ -1,64 +1,46 @@
 <%- include('partials/header') %>
 
-    <main>
-        <h1>
-            <%= title %>
-        </h1>
-
-        <p>
-            Discover service projects designed to make a positive impact in communities around the region.
-            These projects connect volunteers with meaningful work across a range of focus areas.
-        </p>
+    <main class="projects-page">
+        <section class="projects-hero">
+            <p class="projects-subtitle">Showing the next <%= Array.isArray(projects) ? projects.length : 0 %> upcoming
+                    service opportunities:</p>
+            <h1>
+                <%= title %>
+            </h1>
+            <p class="projects-description">Connect with volunteer-powered service projects that support local
+                communities and build brighter futures.</p>
+        </section>
 
         <% const projectsList=Array.isArray(projects) ? projects : []; %>
 
-            <section>
-                <h2>Upcoming Service Projects</h2>
-
+            <section class="project-grid-section">
                 <% if (projectsList.length===0) { %>
                     <p>No projects found.</p>
                     <% } else { %>
-                        <div class="project-list">
+                        <div class="project-grid">
                             <% projectsList.forEach(project=> { %>
                                 <article class="project-card">
-                                    <h3>
+                                    <h3 class="project-title">
                                         <a href="/project/<%= project.project_id %>">
                                             <%= project.title %>
                                         </a>
                                     </h3>
 
-                                    <p>
-                                        <strong>Organization:</strong>
+                                    <p class="project-sponsor">
+                                        Sponsored by
                                         <a href="/organization/<%= project.organization_id %>">
                                             <%= project.organization_name %>
                                         </a>
                                     </p>
 
-                                    <p>
-                                        <%= project.description %>
-                                    </p>
-
-                                    <p>
-                                        <strong>Date:</strong>
-                                        <%= project.date ? new Date(project.date).toDateString() : '' %>
-                                    </p>
-
-                                    <p>
-                                        <strong>Location:</strong>
-                                        <%= project.location %>
-                                    </p>
+                                    <div class="project-actions">
+                                        <a class="btn-small" href="/project/<%= project.project_id %>">View Details</a>
+                                        <a class="btn-small btn-secondary" href="#">Add a New Service Project</a>
+                                    </div>
                                 </article>
                                 <% }) %>
                         </div>
                         <% } %>
-            </section>
-
-            <section>
-                <h2>How to Get Involved</h2>
-                <p>
-                    Browse projects by category, choose one that matches your interests, and join other volunteers
-                    to make a real difference. Every project helps build stronger communities.
-                </p>
             </section>
     </main>
 
