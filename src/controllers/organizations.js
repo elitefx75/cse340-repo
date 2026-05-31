@@ -3,6 +3,7 @@
 import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
+import { updateOrganization } from '../models/organizations.js';
 
 
 // Define validation and sanitization rules for organization form
@@ -72,6 +73,41 @@ const processNewOrganizationForm = async (req, res) => {
     res.redirect(`/organization/${organizationId}`);
 };
 
+const showEditOrganizationForm = async (req, res, next) => {
+    const organizationId = req.params.id;
+    console.log('showEditOrganizationForm called for id:', organizationId);
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    if (!organizationDetails) {
+        const err = new Error('Organization not found');
+        err.status = 404;
+        return next(err);
+    }
+
+    const title = 'Edit Organization';
+    res.render('edit-organization', { title, organizationDetails });
+};
+const processEditOrganizationForm = async (req, res) => {
+    // First check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        results.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+        return res.redirect('/edit-organization/' + req.params.id);
+    }
+
+    //  Only update if validation passes
+    const organizationId = req.params.id;
+    const { name, description, contactEmail } = req.body;
+    const logoFilename = req.body.logoFilename || 'placeholder-logo.png';
+
+    await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
+
+    req.flash('success', 'Organization updated successfully!');
+    res.redirect(`/organization/${organizationId}`);
+};
+
 // Export any controller functions
-export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation };
-    
+export { showOrganizationsPage, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation, showEditOrganizationForm, processEditOrganizationForm };
+
