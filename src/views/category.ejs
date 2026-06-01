@@ -11,6 +11,8 @@
                     <%= categoryDetails.category_description %>
                 </p>
 
+                <p><a href="/edit-category/<%= categoryDetails.category_id %>">Edit Category</a></p>
+
                 <h2>Service Projects in this Category</h2>
                 <% if (projects && projects.length> 0) { %>
                     <ul class="project-list">
