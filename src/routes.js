@@ -7,6 +7,7 @@ import {
   processLoginForm,
   processLogout,
   showDashboard,
+  showUsersPage,
   requireLogin,
   requireRole
 } from './controllers/users.js';
@@ -86,6 +87,9 @@ router.get('/logout', processLogout);
 
 // Dashboard route (protected)
 router.get('/dashboard', requireLogin, showDashboard);
+
+// Admin-only users list
+router.get('/users', requireRole('admin'), showUsersPage);
 
 // Error handling
 router.get('/test-error', testErrorPage);
