@@ -1,6 +1,16 @@
 import express from 'express';
 import { showHomePage } from './controllers/index.js';
 import {
+  showUserRegistrationForm,
+  processUserRegistrationForm,
+  showLoginForm,
+  processLoginForm,
+  processLogout,
+  showDashboard,
+  requireLogin
+} from './controllers/users.js';
+
+import {
   showOrganizationsPage,
   showOrganizationDetailsPage,
   showNewOrganizationForm,
@@ -63,6 +73,18 @@ router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 // Assign categories to projects
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+
+// User registration routes
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+// User login routes
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Dashboard route (protected)
+router.get('/dashboard', requireLogin, showDashboard);
 
 // Error handling
 router.get('/test-error', testErrorPage);

@@ -20,7 +20,12 @@ const flashMiddleware = (req, res, next) => {
      * - Called with 1 arg (type): retrieves and clears messages of that type
      * - Called with 0 args: retrieves and clears all messages
      */
-    req.flash = function(type, message) {
+    req.flash = function (type, message) {
+        // Guard against missing session object
+        if (!req.session) {
+            req.session = {};
+        }
+
         // Initialize flash storage if it doesn't exist
         if (!req.session.flash) {
             req.session.flash = {
