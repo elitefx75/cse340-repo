@@ -11,22 +11,24 @@
                     <%= categoryDetails.category_description %>
                 </p>
 
-                <p><a href="/edit-category/<%= categoryDetails.category_id %>">Edit Category</a></p>
+                <% if (user && user.role_name==='admin' ) { %>
+                    <p><a href="/edit-category/<%= categoryDetails.category_id %>">Edit Category</a></p>
+                    <% } %>
 
-                <h2>Service Projects in this Category</h2>
-                <% if (projects && projects.length> 0) { %>
-                    <ul class="project-list">
-                        <% projects.forEach(project=> { %>
-                            <li>
-                                <a href="/project/<%= project.project_id %>">
-                                    <%= project.title %>
-                                </a>
-                            </li>
-                            <% }) %>
-                    </ul>
-                    <% } else { %>
-                        <p>No service projects are currently assigned to this category.</p>
-                        <% } %>
+                        <h2>Service Projects in this Category</h2>
+                        <% if (projects && projects.length> 0) { %>
+                            <ul class="project-list">
+                                <% projects.forEach(project=> { %>
+                                    <li>
+                                        <a href="/project/<%= project.project_id %>">
+                                            <%= project.title %>
+                                        </a>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% } else { %>
+                                <p>No service projects are currently assigned to this category.</p>
+                                <% } %>
             </section>
             <% } else { %>
                 <p>Category not found.</p>

@@ -4,26 +4,28 @@
         <h1>
             <%= title %>
         </h1>
-        <p><a href="/new-category" class="btn">Add New Category</a></p>
-        <ul class="grid-list">
-            <% categories.forEach(category=> { %>
-                <li>
-                    <img src="/images/<%= category.category_image %>" alt="<%= category.category_name %> icon">
+        <% if (user && user.role_name==='admin' ) { %>
+            <p><a href="/new-category" class="btn">Add New Category</a></p>
+            <% } %>
+                <ul class="grid-list">
+                    <% categories.forEach(category=> { %>
+                        <li>
+                            <img src="/images/<%= category.category_image %>" alt="<%= category.category_name %> icon">
 
-                    <strong>
-                        <a href="/category/<%= category.category_id %>">
-                            <%= category.category_name %>
-                        </a>
-                    </strong>
+                            <strong>
+                                <a href="/category/<%= category.category_id %>">
+                                    <%= category.category_name %>
+                                </a>
+                            </strong>
 
-                    <p class="category-desc">
-                        <%= category.category_description %>
-                    </p>
+                            <p class="category-desc">
+                                <%= category.category_description %>
+                            </p>
 
-                    <a href="/category/<%= category.category_id %>" class="btn-small">View Projects</a>
-                </li>
-                <% }); %>
-        </ul>
+                            <a href="/category/<%= category.category_id %>" class="btn-small">View Projects</a>
+                        </li>
+                        <% }); %>
+                </ul>
     </main>
 
     <%- include('partials/footer') %>

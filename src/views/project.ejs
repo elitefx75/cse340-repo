@@ -28,19 +28,21 @@
                 </a>
             </p>
 
-            <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
-
-            <% if (categories && categories.length> 0) { %>
-                <p>
-                    <strong>Categories:</strong>
-                    <% categories.forEach((category, index)=> { %>
-                        <a class="tag" href="/category/<%= category.category_id %>">
-                            <%= category.category_name %>
-                        </a>
-                        <%= index < categories.length - 1 ? ', ' : '' %>
-                            <% }) %>
-                </p>
+            <% if (user && user.role_name==='admin' ) { %>
+                <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
                 <% } %>
+
+                    <% if (categories && categories.length> 0) { %>
+                        <p>
+                            <strong>Categories:</strong>
+                            <% categories.forEach((category, index)=> { %>
+                                <a class="tag" href="/category/<%= category.category_id %>">
+                                    <%= category.category_name %>
+                                </a>
+                                <%= index < categories.length - 1 ? ', ' : '' %>
+                                    <% }) %>
+                        </p>
+                        <% } %>
         </section>
     </main>
 

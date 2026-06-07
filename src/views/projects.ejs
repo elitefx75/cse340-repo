@@ -35,7 +35,10 @@
 
                                     <div class="project-actions">
                                         <a class="btn-small" href="/project/<%= project.project_id %>">View Details</a>
-                                        <a class="btn-small btn-secondary" href="/new-project">Add a New Service Project</a>
+                                        <% if (user && user.role_name==='admin' ) { %>
+                                            <a class="btn-small btn-secondary" href="/new-project">Add a New Service
+                                                Project</a>
+                                            <% } %>
                                     </div>
                                 </article>
                                 <% }) %>

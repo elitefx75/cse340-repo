@@ -19,9 +19,13 @@
                         <%= project.title %>
                     </a></li>
                 <% }) %>
-                    <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+                    <% if (user && user.role_name==='admin' ) { %>
+                        <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
+                        </p>
+                        <% } %>
         </ul>
     </main>
-    <%- include('partials/footer') %>
-
+    <% if (user && user.role_name==='admin' ) { %>
         <p><a href="/new-organization">Add a new organization</a></p>
+        <% } %>
+            <%- include('partials/footer') %>
