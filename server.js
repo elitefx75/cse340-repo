@@ -15,7 +15,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const SESSION_SECRET = process.env.SESSION_SECRET;
+const SESSION_SECRET = process.env.SESSION_SECRET || process.env.SESSION_SECRET_KEY || 'default_dev_session_secret';
+
+if (!process.env.SESSION_SECRET) {
+    console.warn('Warning: SESSION_SECRET is not set. Using a default session secret. Set SESSION_SECRET in your environment for production.');
+}
 
 app.set('view engine', 'ejs');
 
@@ -83,7 +87,10 @@ app.use((err, req, res, next) => {
     const context = {
         title: status === 404 ? 'Page Not Found' : 'Server Error',
         error: err.message,
-        stack: err.stack
+        stack: err.stack,
+        isLoggedIn: Boolean(req.session?.user),
+        user: req.session?.user || null,
+        NODE_ENV
     };
 
     // Render the appropriate error template
