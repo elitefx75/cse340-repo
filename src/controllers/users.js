@@ -2,7 +2,8 @@ import bcrypt from 'bcrypt';
 import {
     createUser,
     authenticateUser,
-    getAllUsers
+    getAllUsers,
+    findUserByEmail
 } from '../models/users.js';
 
 const showUserRegistrationForm = (req, res) => {
@@ -11,21 +12,35 @@ const showUserRegistrationForm = (req, res) => {
 
 const processUserRegistrationForm = async (req, res) => {
     const { name, email, password } = req.body;
+    const normalizedEmail = email?.trim().toLowerCase();
+    const normalizedName = name?.trim();
+
+    if (!normalizedName || !normalizedEmail || !password) {
+        req.flash('error', 'Please complete all registration fields.');
+        return res.redirect('/register');
+    }
 
     try {
+        const existingUser = await findUserByEmail(normalizedEmail);
+        if (existingUser) {
+            req.flash('error', 'That email is already registered. Please log in or choose another email.');
+            return res.redirect('/register');
+        }
+
         // Hash the password before storing it
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        // Create the user in the database
-        const userId = await createUser(name, email, passwordHash);
+        await createUser(normalizedName, normalizedEmail, passwordHash);
 
-        // Redirect to the home page after successful registration
         req.flash('success', 'Registration successful! Please log in.');
-        res.redirect('/');
+        return res.redirect('/login');
     } catch (error) {
-        console.error('Error registering user:', error);
-        req.flash('error', 'An error occurred during registration. Please try again.');
+        console.error('Error registering user:', error.message, error.stack);
+        const message = error.code === '23505'
+            ? 'That email is already registered. Please log in.'
+            : 'An error occurred during registration. Please try again.';
+        req.flash('error', message);
         res.redirect('/register');
     }
 };
@@ -36,9 +51,15 @@ const showLoginForm = (req, res) => {
 
 const processLoginForm = async (req, res) => {
     const { email, password } = req.body;
+    const normalizedEmail = email?.trim().toLowerCase();
+
+    if (!normalizedEmail || !password) {
+        req.flash('error', 'Please enter both email and password.');
+        return res.redirect('/login');
+    }
 
     try {
-        const user = await authenticateUser(email, password);
+        const user = await authenticateUser(normalizedEmail, password);
         if (user) {
             // Store user info in session
             req.session.user = user;
@@ -48,13 +69,13 @@ const processLoginForm = async (req, res) => {
                 console.log('User logged in:', user);
             }
 
-            res.redirect('/dashboard');
-        } else {
-            req.flash('error', 'Invalid email or password.');
-            res.redirect('/login');
+            return res.redirect('/dashboard');
         }
+
+        req.flash('error', 'Invalid email or password.');
+        res.redirect('/login');
     } catch (error) {
-        console.error('Error during login:', error);
+        console.error('Error during login:', error.message, error.stack);
         req.flash('error', 'An error occurred during login. Please try again.');
         res.redirect('/login');
     }

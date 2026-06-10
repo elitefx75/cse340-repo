@@ -25,10 +25,10 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-        SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
+        SELECT u.user_id, u.name, u.email, u.password_hash, COALESCE(r.role_name, 'user') AS role_name
         FROM users u
-        JOIN roles r ON u.role_id = r.role_id
-        WHERE u.email = $1
+        LEFT JOIN roles r ON u.role_id = r.role_id
+        WHERE LOWER(u.email) = LOWER($1)
     `;
     const queryParams = [email];
 
@@ -43,9 +43,9 @@ const findUserByEmail = async (email) => {
 
 const getAllUsers = async () => {
     const query = `
-        SELECT u.user_id, u.name, u.email, r.role_name
+        SELECT u.user_id, u.name, u.email, COALESCE(r.role_name, 'user') AS role_name
         FROM users u
-        JOIN roles r ON u.role_id = r.role_id
+        LEFT JOIN roles r ON u.role_id = r.role_id
         ORDER BY u.name ASC
     `;
 
@@ -75,4 +75,4 @@ const authenticateUser = async (email, password) => {
     const { password_hash, ...userWithoutPassword } = user;
     return userWithoutPassword;
 };
-export { createUser, authenticateUser, getAllUsers };
+export { createUser, authenticateUser, getAllUsers, findUserByEmail };

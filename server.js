@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import flash from './src/middleware/flash.js';
 import express from 'express';
 import router from './src/routes.js';
