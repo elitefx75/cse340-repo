@@ -39,7 +39,9 @@ const processUserRegistrationForm = async (req, res) => {
         console.error('Error registering user:', error.message, error.stack);
         const message = error.code === '23505'
             ? 'That email is already registered. Please log in.'
-            : 'An error occurred during registration. Please try again.';
+            : error.message.includes('Role')
+                ? 'Default user role is missing. Please ensure the roles table is seeded and retry.'
+                : 'An error occurred during registration. Please try again.';
         req.flash('error', message);
         res.redirect('/register');
     }

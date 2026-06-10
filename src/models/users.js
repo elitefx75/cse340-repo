@@ -1,14 +1,29 @@
 import db from './db.js';
 import bcrypt from 'bcrypt';
 
-const createUser = async (name, email, passwordHash) => {
-    const default_role = 'user';
+const getRoleIdByName = async (roleName) => {
     const query = `
-        INSERT INTO users (name, email, password_hash, role_id) 
-        VALUES ($1, $2, $3, (SELECT role_id FROM roles WHERE role_name = $4)) 
+        SELECT role_id
+        FROM roles
+        WHERE role_name = $1
+    `;
+    const result = await db.query(query, [roleName]);
+
+    if (result.rows.length === 0) {
+        throw new Error(`Role '${roleName}' not found in the roles table`);
+    }
+
+    return result.rows[0].role_id;
+};
+
+const createUser = async (name, email, passwordHash) => {
+    const roleId = await getRoleIdByName('user');
+    const query = `
+        INSERT INTO users (name, email, password_hash, role_id)
+        VALUES ($1, $2, $3, $4)
         RETURNING user_id
     `;
-    const queryParams = [name, email, passwordHash, default_role];
+    const queryParams = [name, email, passwordHash, roleId];
 
     const result = await db.query(query, queryParams);
 
