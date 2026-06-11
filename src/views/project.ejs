@@ -32,17 +32,28 @@
                 <p><a href="/edit-project/<%= project.project_id %>">Edit Project</a></p>
                 <% } %>
 
-                    <% if (categories && categories.length> 0) { %>
-                        <p>
-                            <strong>Categories:</strong>
-                            <% categories.forEach((category, index)=> { %>
-                                <a class="tag" href="/category/<%= category.category_id %>">
-                                    <%= category.category_name %>
-                                </a>
-                                <%= index < categories.length - 1 ? ', ' : '' %>
-                                    <% }) %>
-                        </p>
-                        <% } %>
+                    <% if (user) { %>
+                        <% if (isVolunteering) { %>
+                            <p>You are volunteering for this project.</p>
+                            <p><a href="/project/<%= project.project_id %>/unvolunteer">Remove your volunteer signup</a>
+                            </p>
+                            <% } else { %>
+                                <p><a href="/project/<%= project.project_id %>/volunteer">Volunteer for this project</a>
+                                </p>
+                                <% } %>
+                                    <% } %>
+
+                                        <% if (categories && categories.length> 0) { %>
+                                            <p>
+                                                <strong>Categories:</strong>
+                                                <% categories.forEach((category, index)=> { %>
+                                                    <a class="tag" href="/category/<%= category.category_id %>">
+                                                        <%= category.category_name %>
+                                                    </a>
+                                                    <%= index < categories.length - 1 ? ', ' : '' %>
+                                                        <% }) %>
+                                            </p>
+                                            <% } %>
         </section>
     </main>
 

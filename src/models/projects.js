@@ -76,6 +76,76 @@ const getProjectDetails = async (id) => {
   return result.rows[0]; // return single project object
 };
 
+const addVolunteerToProject = async (userId, projectId) => {
+  const query = `
+    INSERT INTO project_volunteer (project_id, user_id)
+    VALUES ($1, $2)
+    ON CONFLICT DO NOTHING;
+  `;
+  await db.query(query, [projectId, userId]);
+};
+
+const removeVolunteerFromProject = async (userId, projectId) => {
+  const query = `
+    DELETE FROM project_volunteer
+    WHERE project_id = $1
+      AND user_id = $2;
+  `;
+  await db.query(query, [projectId, userId]);
+};
+
+const getVolunteeredProjectsByUserId = async (userId) => {
+  const query = `
+    SELECT p.project_id,
+           p.organization_id,
+           p.title,
+           p.description,
+           p.location,
+           p.date,
+           o.name AS organization_name
+    FROM public.project p
+    JOIN public.organization o
+      ON p.organization_id = o.organization_id
+    JOIN project_volunteer pv
+      ON p.project_id = pv.project_id
+    WHERE pv.user_id = $1
+    ORDER BY p.date;
+  `;
+
+  try {
+    const result = await db.query(query, [userId]);
+    return result.rows;
+  } catch (error) {
+    if (error.code === '42P01') {
+      console.error('Volunteer table not found:', error.message);
+      return [];
+    }
+    throw error;
+  }
+};
+
+const isUserVolunteeringForProject = async (userId, projectId) => {
+  const query = `
+    SELECT EXISTS(
+      SELECT 1
+      FROM project_volunteer
+      WHERE user_id = $1
+        AND project_id = $2
+    ) AS is_volunteering;
+  `;
+
+  try {
+    const result = await db.query(query, [userId, projectId]);
+    return result.rows[0]?.is_volunteering || false;
+  } catch (error) {
+    if (error.code === '42P01') {
+      console.error('Volunteer table not found:', error.message);
+      return false;
+    }
+    throw error;
+  }
+};
+
 const createProject = async (title, description, location, date, organizationId) => {
   const query = `
       INSERT INTO project (title, description, location, date, organization_id)
@@ -129,6 +199,10 @@ export {
   getProjectsByOrganizationId,
   getUpcomingProjects,
   getProjectDetails,
+  addVolunteerToProject,
+  removeVolunteerFromProject,
+  getVolunteeredProjectsByUserId,
+  isUserVolunteeringForProject,
   createProject,
   updateProject,
 };

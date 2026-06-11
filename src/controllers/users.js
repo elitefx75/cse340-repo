@@ -5,6 +5,7 @@ import {
     getAllUsers,
     findUserByEmail
 } from '../models/users.js';
+import { getVolunteeredProjectsByUserId } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -121,13 +122,22 @@ const showDashboard = async (req, res) => {
         const user = req.session.user;
         const users = await getAllUsers();
         const otherUsers = users.filter((u) => u.user_id !== user.user_id);
+        let volunteerProjects = [];
+
+        try {
+            volunteerProjects = await getVolunteeredProjectsByUserId(user.user_id);
+        } catch (error) {
+            console.error('Error loading volunteer projects:', error.message);
+            volunteerProjects = [];
+        }
 
         res.render('dashboard', {
             title: 'Dashboard',
             name: user.name,
             email: user.email,
             role: user.role_name,
-            otherUsers
+            otherUsers,
+            volunteerProjects
         });
     } catch (error) {
         console.error('Error loading dashboard:', error);

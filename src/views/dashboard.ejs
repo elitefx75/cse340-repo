@@ -13,6 +13,44 @@
         <p>Role: <%= role %>
         </p>
 
+        <section>
+            <h3>Your Volunteer Projects</h3>
+            <% if (volunteerProjects && volunteerProjects.length> 0) { %>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Project</th>
+                            <th>Date</th>
+                            <th>Location</th>
+                            <th>Organization</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% volunteerProjects.forEach((project)=> { %>
+                            <tr>
+                                <td><a href="/project/<%= project.project_id %>">
+                                        <%= project.title %>
+                                    </a></td>
+                                <td>
+                                    <%= project.date ? new Date(project.date).toDateString() : '' %>
+                                </td>
+                                <td>
+                                    <%= project.location %>
+                                </td>
+                                <td>
+                                    <%= project.organization_name %>
+                                </td>
+                                <td><a href="/project/<%= project.project_id %>/unvolunteer">Remove</a></td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+                <% } else { %>
+                    <p>You are not volunteering for any projects yet.</p>
+                    <% } %>
+        </section>
+
         <% if (otherUsers && otherUsers.length> 0) { %>
             <section>
                 <h3>Other users</h3>
