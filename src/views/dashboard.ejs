@@ -10,9 +10,44 @@
         </p>
         <p>Username: <%= email %>
         </p>
-        <% if (user && user.role_name==='admin' ) { %>
-            <p><a href="/users">View all registered users</a></p>
-            <% } %>
+        <p>Role: <%= role %>
+        </p>
+
+        <% if (otherUsers && otherUsers.length> 0) { %>
+            <section>
+                <h3>Other users</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% otherUsers.forEach((otherUser)=> { %>
+                            <tr>
+                                <td>
+                                    <%= otherUser.name %>
+                                </td>
+                                <td>
+                                    <%= otherUser.email %>
+                                </td>
+                                <td>
+                                    <%= otherUser.role_name %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </section>
+            <% } else { %>
+                <p>No other users are available yet.</p>
+                <% } %>
+
+                    <% if (user && user.role_name==='admin' ) { %>
+                        <p><a href="/users">View all registered users</a></p>
+                        <% } %>
 
     </main>
 

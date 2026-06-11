@@ -116,14 +116,24 @@ const requireRole = (role) => {
     };
 };
 
-const showDashboard = (req, res) => {
-    const user = req.session.user;
-    res.render('dashboard', {
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email,
-        role: user.role_name
-    });
+const showDashboard = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const users = await getAllUsers();
+        const otherUsers = users.filter((u) => u.user_id !== user.user_id);
+
+        res.render('dashboard', {
+            title: 'Dashboard',
+            name: user.name,
+            email: user.email,
+            role: user.role_name,
+            otherUsers
+        });
+    } catch (error) {
+        console.error('Error loading dashboard:', error);
+        req.flash('error', 'Unable to load dashboard data at this time.');
+        res.redirect('/');
+    }
 };
 
 const showUsersPage = async (req, res) => {
