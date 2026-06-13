@@ -19,11 +19,12 @@
                         <%= project.title %>
                     </a></li>
                 <% }) %>
-                    <% if (user && user.role_name==='admin' ) { %>
-                        <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
-                        </p>
-                        <% } %>
         </ul>
+
+        <% if (user && user.role_name==='admin' ) { %>
+            <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+            <p><a href="/new-project">Add New Project</a></p>
+            <% } %>
     </main>
     <% if (user && user.role_name==='admin' ) { %>
         <p><a href="/new-organization">Add a new organization</a></p>
